@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Kittu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, serif;
+  color: white;
+  overflow: hidden;
+}
+
+.card {
+  background: rgba(0,0,0,0.65);
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 720px;
+  text-align: center;
+  z-index: 2;
+}
+
+input, button {
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  font-size: 16px;
+}
+
+button {
+  background: #ff4b5c;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ff1f3d;
+}
+
+#content {
+  display: none;
+}
+
+#photo {
+  width: 180px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 2s ease, transform 2s ease;
+}
+
+#photo.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#message {
+  text-align: left;
+  margin-top: 20px;
+  white-space: pre-line;
+}
+
+.heart {
+  position: absolute;
+  bottom: -20px;
+  color: #ff4b5c;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="lock">
+  <h2>Enter Password</h2>
+  <input type="password" id="pass" placeholder="Password">
+  <br><br>
+  <button onclick="unlock()">Open</button>
+</div>
+
+<div class="card" id="content">
+  <img id="photo" alt="Kittu">
+  <h1>For Kittu😺🫠</h1>
+  <div id="message"></div>
+</div>
+
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/03/audio_7c8f4f8c3b.mp3">
+</audio>
+
+<audio id="click">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9c2f7d.mp3">
+</audio>
+
+<audio id="heartbeat" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_6cfd1e9dbf.mp3">
+</audio>
+
+<script>
+const correctPassword = "promise";
+
+const text = `
+My love Kittu😺🫠,
+
+Today is Promise Day, but what I’m writing is not for one day.
+It’s for every tomorrow we haven’t reached yet.
+
+I promise you this:
+I will choose you not only when it’s easy,
+but when it’s hard, messy, and uncomfortable.
+
+I promise to listen, not just hear.
+To understand your fears even when you can’t explain them.
+
+I promise not to leave when things break.
+I will try to fix, to heal, to rebuild.
+
+I promise honesty.
+Loyalty.
+Respect.
+Effort.
+
+And most importantly,
+as long as I breathe,
+you will never be alone in this world.
+
+My heart is your home.
+
+Happy Promise Day.
+Always yours.
+`;
+
+let index = 0;
+
+function unlock() {
+  document.getElementById("click").play();
+  const input = document.getElementById("pass").value;
+
+  if (input === correctPassword) {
+    document.getElementById("lock").style.display = "none";
+    document.getElementById("content").style.display = "block";
+
+    const img = document.getElementById("photo");
+    img.src = "./kittu.jpg";
+    img.classList.add("show");
+
+    document.getElementById("bgm").play();
+    document.getElementById("heartbeat").play();
+
+    typeText();
+    startHearts();
+  } else {
+    alert("Wrong password");
+  }
+}
+
+function typeText() {
+  if (index < text.length) {
+    document.getElementById("message").innerHTML += text.charAt(index);
+    index++;
+    setTimeout(typeText, 45);
+  }
+}
+
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 300);
+}
+</script>
+
+</body>
+</html>
