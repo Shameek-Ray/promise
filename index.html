@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kittu Birthday</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#1e1e2f,#3a0ca3);
+  color:white;
+  overflow-x:hidden;
+}
+
+/* screens */
+#lock,#start{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:20;
+  text-align:center;
+}
+
+/* card */
+.card{
+  margin:30px auto;
+  width:90%;
+  max-width:600px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+}
+
+/* image */
+img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #ff4d6d;
+}
+
+/* glow */
+h1{
+  text-shadow:
+  0 0 10px #ff4d6d,
+  0 0 20px #ff4d6d,
+  0 0 40px #ff4d6d;
+}
+
+/* text */
+#text{
+  white-space:pre-line;
+  line-height:1.6;
+}
+
+/* effects */
+#effects{
+  position:fixed;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+/* heart */
+.heart{
+  position:absolute;
+  width:15px;height:15px;
+  background:#ff4d6d;
+  transform:rotate(45deg);
+}
+.heart:before,.heart:after{
+  content:"";
+  position:absolute;
+  width:15px;height:15px;
+  background:#ff4d6d;
+  border-radius:50%;
+}
+.heart:before{top:-7px;}
+.heart:after{left:-7px;}
+
+/* spark */
+.spark{
+  position:absolute;
+  width:4px;height:4px;
+  background:white;
+  border-radius:50%;
+}
+
+/* balloon */
+.balloon{
+  position:absolute;
+  bottom:-100px;
+  width:40px;height:50px;
+  border-radius:50%;
+  animation:float linear infinite;
+}
+@keyframes float{
+  to{transform:translateY(-120vh);}
+}
+
+/* flower */
+.flower{
+  position:absolute;
+  top:-20px;
+  font-size:18px;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);}
+}
+
+input,button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+}
+button{
+  background:#ff4d6d;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lock">
+  <div>
+    <h2>Enter Password 🔒</h2>
+    <input type="password" id="pass">
+    <br><br>
+    <button onclick="unlock()">Unlock</button>
+  </div>
+</div>
+
+<!-- START -->
+<div id="start" style="display:none;">Tap to open ❤️</div>
+
+<div id="effects"></div>
+
+<!-- MAIN -->
+<div class="card" id="main" style="display:none;">
+  <img src="photo.jpg">
+  <h1>Happy Birthday Kittu 🎂</h1>
+  <p id="text"></p>
+</div>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+
+/* PASSWORD */
+function unlock(){
+  if(pass.value==="Happy birthday miss😽"){
+    lock.style.display="none";
+    start.style.display="flex";
+  }else{
+    alert("Wrong password");
+  }
+}
+
+/* MESSAGE */
+const msg = `Happy Birthday, Kittu (my Kawaii) 🎂✨
+
+I don’t need a special day to think about you… but today gives me a reason to say it properly.
+
+Out of all the random people in this world, somehow you became my favorite notification 📱💫 The one name I don’t ignore. The one message I actually wait for 👀💬
+
+You’ve become something rare in my life. Not just someone I talk to, but someone I look forward to. Your presence changes my mood without trying… and that’s not normal 🤍
+
+You didn’t try to impress, didn’t act different… you just stayed you. And that’s exactly what made you stand out 🌸
+
+You’re soft but not weak. Cute but not ordinary 🧸✨ There’s something about you that doesn’t fit into simple words… calm and chaotic at the same time.
+
+I’m not here to make fake promises or dramatic forever lines. What’s real is this… you matter to me more than you probably realize 💭❤️ and talking to you is something I don’t get bored of.
+
+So today, don’t overthink anything. Laugh more, be a little annoying 😌, enjoy everything… just be your real self 🎈
+
+And yeah… stay my Kawaii 🫶 I like you exactly like that.
+
+Happy Birthday 🎉
+
+— SR`;
+
+let i=0;
+
+function type(){
+  if(i<msg.length){
+    text.innerHTML+=msg.charAt(i);
+    window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+    i++;
+    setTimeout(type,18);
+  }
+}
+
+/* START */
+start.onclick=()=>{
+  start.style.display="none";
+  main.style.display="block";
+  music.play();
+  type();
+  bgEffects();
+};
+
+/* CLICK EFFECT */
+document.addEventListener('click',(e)=>{
+  burst(e.clientX,e.clientY);
+  fireworks(e.clientX,e.clientY);
+});
+
+function burst(x,y){
+  for(let i=0;i<6;i++){
+    let h=document.createElement('div');
+    h.className='heart';
+    h.style.left=x+'px';
+    h.style.top=y+'px';
+
+    let a=Math.random()*360,d=80;
+
+    h.animate([
+      {transform:'translate(0,0) rotate(45deg)',opacity:1},
+      {transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) rotate(45deg)`,opacity:0}
+    ],{duration:800});
+
+    effects.appendChild(h);
+    setTimeout(()=>h.remove(),800);
+  }
+
+  for(let i=0;i<6;i++){
+    let s=document.createElement('div');
+    s.className='spark';
+    s.style.left=x+'px';
+    s.style.top=y+'px';
+
+    let a=Math.random()*360,d=60;
+
+    s.animate([
+      {transform:'translate(0,0)',opacity:1},
+      {transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`,opacity:0}
+    ],{duration:600});
+
+    effects.appendChild(s);
+    setTimeout(()=>s.remove(),600);
+  }
+}
+
+function fireworks(x,y){
+  for(let i=0;i<20;i++){
+    let p=document.createElement('div');
+    p.style.position='absolute';
+    p.style.width='5px';
+    p.style.height='5px';
+    p.style.borderRadius='50%';
+    p.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    p.style.left=x+'px';
+    p.style.top=y+'px';
+
+    let a=Math.random()*360,d=120;
+
+    p.animate([
+      {transform:'translate(0,0)',opacity:1},
+      {transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`,opacity:0}
+    ],{duration:900});
+
+    effects.appendChild(p);
+    setTimeout(()=>p.remove(),900);
+  }
+}
+
+/* BACKGROUND */
+function bgEffects(){
+  for(let i=0;i<10;i++){
+    let b=document.createElement('div');
+    b.className='balloon';
+    b.style.left=Math.random()*100+'vw';
+    b.style.background=`hsl(${Math.random()*360},70%,60%)`;
+    b.style.animationDuration=(6+Math.random()*5)+'s';
+    effects.appendChild(b);
+  }
+
+  let flowers=["🌸","🌺","🌼"];
+  for(let i=0;i<15;i++){
+    let f=document.createElement('div');
+    f.className='flower';
+    f.innerText=flowers[Math.floor(Math.random()*3)];
+    f.style.left=Math.random()*100+'vw';
+    f.style.animationDuration=(5+Math.random()*5)+'s';
+    effects.appendChild(f);
+  }
+}
+
+</script>
+
+</body>
+</html>
